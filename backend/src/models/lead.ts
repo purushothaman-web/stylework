@@ -1,14 +1,7 @@
-export type LeadStatus = 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'WON' | 'LOST';
+import type { Lead as PrismaLead, LeadStatus as PrismaLeadStatus } from '@prisma/client';
 
-export interface Lead {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  status: LeadStatus;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export type LeadStatus = PrismaLeadStatus;
+export type Lead = PrismaLead;
 
 export interface CreateLeadDTO {
   name: string;
