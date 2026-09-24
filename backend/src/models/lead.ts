@@ -1,6 +1,7 @@
-import type { Lead as PrismaLead, LeadStatus as PrismaLeadStatus } from '@prisma/client';
+import { LeadStatus } from '@prisma/client';
+import type { Lead as PrismaLead } from '@prisma/client';
 
-export type LeadStatus = PrismaLeadStatus;
+export { LeadStatus };
 export type Lead = PrismaLead;
 
 export interface CreateLeadDTO {

@@ -6,7 +6,11 @@ export class LeadController {
 
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      res.status(501).json({ message: 'Not implemented' });
+      const lead = await this.leadService.createLead(req.body);
+      res.status(201).json({
+        success: true,
+        data: lead,
+      });
     } catch (err) {
       next(err);
     }
@@ -14,7 +18,31 @@ export class LeadController {
 
   async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      res.status(501).json({ message: 'Not implemented' });
+      const { search, status } = req.query;
+      const leads = await this.leadService.getLeads(
+        typeof search === 'string' ? search : undefined,
+        typeof status === 'string' ? status : undefined
+      );
+
+      res.status(200).json({
+        success: true,
+        count: leads.length,
+        data: leads,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = typeof req.params.id === 'string' ? req.params.id : '';
+      const lead = await this.leadService.getLeadById(id);
+
+      res.status(200).json({
+        success: true,
+        data: lead,
+      });
     } catch (err) {
       next(err);
     }
@@ -22,7 +50,14 @@ export class LeadController {
 
   async updateStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      res.status(501).json({ message: 'Not implemented' });
+      const id = typeof req.params.id === 'string' ? req.params.id : '';
+      const { status } = req.body;
+      const lead = await this.leadService.updateLeadStatus(id, status);
+
+      res.status(200).json({
+        success: true,
+        data: lead,
+      });
     } catch (err) {
       next(err);
     }

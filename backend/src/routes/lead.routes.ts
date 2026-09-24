@@ -11,6 +11,7 @@ export function createLeadRouter(): Router {
 
   router.post('/', controller.create.bind(controller));
   router.get('/', controller.getAll.bind(controller));
+  router.get('/:id', controller.getById.bind(controller));
   router.patch('/:id/status', controller.updateStatus.bind(controller));
 
   return router;
