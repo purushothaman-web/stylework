@@ -121,20 +121,39 @@ export const DashboardPage: React.FC = () => {
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Editorial Top Header */}
         <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-stone-border">
-          <div>
-            <div className="flex items-center gap-3">
-              <h1 className="font-display text-3xl sm:text-4xl font-normal text-espresso tracking-tight">
-                Lead Tracker
-              </h1>
-              {!isLoading && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#f0eee6] text-[#44403c] border border-[#dfdbcf]">
-                  {totalCount} {totalCount === 1 ? 'prospect' : 'prospects'}
-                </span>
-              )}
+          <div className="flex items-start sm:items-center gap-3.5">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-terracotta to-[#9a3412] p-2 flex items-center justify-center shadow-xs shrink-0 ring-1 ring-black/5">
+              <svg className="w-full h-full text-amber-50" viewBox="0 0 64 64" fill="none">
+                <path
+                  d="M42 22C42 18.686 38 16 32 16C24.5 16 20 19 20 24C20 32 44 28.5 44 38.5C44 44 38.5 48 31 48C23.5 48 20 44.5 20 40.5"
+                  stroke="currentColor"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <circle cx="42" cy="22" r="4" fill="#fef08a" />
+                <circle cx="20" cy="40.5" r="3.5" fill="#fdba74" />
+              </svg>
             </div>
-            <p className="text-sm text-[#78716c] mt-1 font-sans">
-              Pipeline management for converting high-value opportunities.
-            </p>
+            <div>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-terracotta bg-[#fbf0ea] px-2 py-0.5 rounded-md border border-[#f5d6c6]">
+                  Stylework
+                </span>
+                <span className="text-stone-300">/</span>
+                <h1 className="font-display text-2xl sm:text-3xl font-medium text-espresso tracking-tight">
+                  Lead Tracker
+                </h1>
+                {!isLoading && (
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#f0eee6] text-[#44403c] border border-[#dfdbcf]">
+                    {totalCount} {totalCount === 1 ? 'prospect' : 'prospects'}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs sm:text-sm text-[#78716c] mt-0.5 font-sans">
+                Pipeline management for converting high-value opportunities.
+              </p>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
