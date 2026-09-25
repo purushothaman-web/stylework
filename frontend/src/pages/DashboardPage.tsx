@@ -4,11 +4,24 @@ import { LeadFormModal } from '../components/LeadFormModal';
 import { leadApi } from '../api/leadApi';
 import type { Lead, CreateLeadPayload } from '../types/lead';
 
+interface Toast {
+  message: string;
+  type: 'success' | 'error';
+}
+
 export const DashboardPage: React.FC = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toast, setToast] = useState<Toast | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 4000);
+  };
 
   const fetchLeads = async (): Promise<void> => {
     setIsLoading(true);
@@ -27,12 +40,44 @@ export const DashboardPage: React.FC = () => {
     fetchLeads();
   }, []);
 
-  const handleCreateLead = async (_data: CreateLeadPayload): Promise<void> => {
-    // Feature 8 will wire full creation
+  const handleCreateLead = async (data: CreateLeadPayload): Promise<void> => {
+    const newLead = await leadApi.createLead(data);
+    setLeads((prev) => [newLead, ...prev]);
+    showToast(`Lead "${newLead.name}" was successfully added!`, 'success');
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 relative">
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed top-5 right-5 z-50 animate-in slide-in-from-top-2 duration-300">
+          <div
+            className={`px-4 py-3 rounded-xl shadow-lg border text-sm font-medium flex items-center gap-2.5 ${
+              toast.type === 'success'
+                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                : 'bg-rose-50 text-rose-800 border-rose-200'
+            }`}
+          >
+            {toast.type === 'success' ? (
+              <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            )}
+            <span>{toast.message}</span>
+            <button
+              onClick={() => setToast(null)}
+              className="ml-2 text-slate-400 hover:text-slate-600 cursor-pointer"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Top Header */}
         <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
