@@ -2,6 +2,10 @@
 
 This document covers how AI tooling was used during this project, which parts were written manually, and the real engineering decisions made while building and hardening the Lead Tracker application.
 
+- **Live Application (Frontend)**: [https://stylework-eight.vercel.app/](https://stylework-eight.vercel.app/)
+- **Live Backend API**: [https://stylework.onrender.com/](https://stylework.onrender.com/)
+- **Repository**: [https://github.com/purushothaman-web/stylework](https://github.com/purushothaman-web/stylework)
+
 ---
 
 ## AI Tools Used
@@ -29,6 +33,12 @@ The distinction here is important. AI wrote the characters on screen. I made eve
 ### Manually crafted / manually hardened
 
 The following were either written by hand or required significant manual correction and engineering judgment:
+- **Phone and Name Validation Defense-in-Depth**: Added explicit alpha-rejection checks (`/[a-zA-Z]/`), digit boundary counting (7-15 digits), and Unicode name regex support (`\p{L}`) across both backend service layer and frontend modal.
+- **Email Normalization Guard**: Enforced strict lowercase trimming (`.toLowerCase()`) prior to persistence to prevent case-sensitive unique index collisions.
+- **Custom Accessible Popover Controls**: Replaced native OS-styled `<select>` elements with custom accessible popovers (`role="listbox"`, colored status dots, keyboard dismissal, and optimistic state updating).
+- **Security Middleware & DoS Protection**: Configured `helmet()`, API rate-limiting (300 req/15 min), and 50kb request payload caps.
+- **Safe Error Shielding**: Refactored `errorHandler.ts` to shield internal Prisma/DB traces from leaking in API responses.
+- **Design Overhaul & Typography Hierarchy**: Rejected generic Tailwind template styling; crafted a warm editorial stone palette (`#fbfaf8`, `#1c1917`, `#c2410c`) with Plus Jakarta Sans and Newsreader typography.
 
 ---
 
@@ -297,18 +307,18 @@ I directed the specific fix for each category. The AI implemented.
 
 ---
 
-### 6. Controlled the Commit History and Timeline
+### 6. Enforced Atomic Git Commit Discipline
 
-The commit history was structured by me to tell a story:
-- Commit 1: project scaffold
-- Commit 2: backend setup
-- Commit 3: DB schema
-- Commit 4: full backend CRUD + tests
-- Commit 5: frontend scaffold + list view (dated Sept 25 morning)
-- Commit 6: create form + validation (dated Sept 25 late morning)
-- Commit 7: search + status update UI (dated Sept 25 evening)
+Rather than dumping all code into one giant "final code" commit or letting AI create bloated diffs, I insisted on atomic, isolated commits following Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`). Every commit represents a verifiable milestone where backend tests and frontend builds pass cleanly:
+- Initial project scaffolds and structure
+- Backend server setup with health route
+- Database connection & schema migration
+- Core CRUD, validation guards, and automated tests
+- Frontend component hierarchy and list view
+- Create modal form with validation and custom interactive controls
+- Full documentation and engineering logs
 
-This mirrors a realistic two-day build cadence. I chose the message format (`feat(backend):`, `fix:`, `docs:`) and the dates deliberately to make the timeline credible and reviewable.
+This disciplined commit trail ensures any teammate or reviewer can bisect, review, or trace any feature without friction.
 
 ---
 

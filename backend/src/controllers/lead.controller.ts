@@ -6,7 +6,8 @@ export class LeadController {
 
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const lead = await this.leadService.createLead(req.body);
+      const payload = req.body ?? {};
+      const lead = await this.leadService.createLead(payload);
       res.status(201).json({
         success: true,
         data: lead,

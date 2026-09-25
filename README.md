@@ -1,18 +1,28 @@
 # Lead Tracker
 
-A full-stack Lead Management application built as part of the Stylework Junior Full Stack Engineer assignment. Track prospects through a sales pipeline with Create, Search, Filter, and Status-Update capabilities — all with strict data validation and a refined editorial UI.
+A full-stack Lead Management application built as part of the Stylework Junior Full Stack Engineer assignment. Track prospects through a sales pipeline with Create, Search, Filter, and Status-Update capabilities — all with strict data validation, rate limiting, security headers, and a refined editorial UI.
+
+---
+
+## 🚀 Live Demo & Links
+
+- **Live Application (Frontend)**: [https://stylework-eight.vercel.app/](https://stylework-eight.vercel.app/)
+- **Live Backend API**: [https://stylework.onrender.com/](https://stylework.onrender.com/)
+- **API Health Check**: [https://stylework.onrender.com/health](https://stylework.onrender.com/health)
+- **GitHub Repository**: [https://github.com/purushothaman-web/stylework](https://github.com/purushothaman-web/stylework)
 
 ---
 
 ## Table of Contents
 
-1. [Architecture](#architecture)
-2. [Tech Stack](#tech-stack)
-3. [Setup Instructions](#setup-instructions)
-4. [API Reference](#api-reference)
-5. [Deployment](#deployment)
-6. [Trade-offs](#trade-offs)
-7. [Future Improvements](#future-improvements)
+1. [Live Demo & Links](#-live-demo--links)
+2. [Architecture](#architecture)
+3. [Tech Stack](#tech-stack)
+4. [Setup Instructions](#setup-instructions)
+5. [API Reference](#api-reference)
+6. [Deployment](#deployment)
+7. [Trade-offs](#trade-offs)
+8. [Future Improvements](#future-improvements)
 
 ---
 
@@ -165,7 +175,7 @@ Edit `backend/.env`:
 ```env
 DATABASE_URL="postgresql://postgres:<password>@localhost:5432/lead_db"
 CLIENT_ORIGIN="http://localhost:5173"
-PORT=3000
+PORT=5000
 NODE_ENV=development
 ```
 
@@ -175,9 +185,12 @@ npm run prisma:push
 
 # Start development server
 npm run dev
+
+# Or build and start production server
+npm start
 ```
 
-Backend will start at `http://localhost:3000`.
+Backend will start at `http://localhost:5000`.
 
 ### 3. Frontend Setup
 
@@ -194,7 +207,7 @@ cp .env.example .env
 Edit `frontend/.env`:
 
 ```env
-VITE_API_URL=http://localhost:3000
+VITE_API_BASE_URL="http://localhost:5000/api"
 ```
 
 ```bash
@@ -211,13 +224,14 @@ cd backend
 npm test
 ```
 
-Expected output: **22/22 tests passing**.
+Expected output: **24/24 tests passing** *(Node.js native test runner testing CRUD, validation guards, Unicode names, and status updates against PostgreSQL)*.
 
 ---
 
 ## API Reference
 
-Base URL: `http://localhost:3000`
+- **Local Base URL**: `http://localhost:5000/api`
+- **Production Base URL**: `https://stylework.onrender.com/api`
 
 ### `GET /health`
 
@@ -288,33 +302,34 @@ Update a lead's status.
 
 ## Deployment
 
-### Backend — Render.com
+### Live Production Deployment
+- **Frontend**: [https://stylework-eight.vercel.app/](https://stylework-eight.vercel.app/)
+- **Backend API**: [https://stylework.onrender.com/](https://stylework.onrender.com/)
 
-1. Create a new **Web Service** on Render, connecting to this repository.
+### Database — Neon PostgreSQL
+1. Create a serverless PostgreSQL database on [Neon](https://neon.tech).
+2. Copy the pooled connection string (with `sslmode=require`).
+3. Set it as `DATABASE_URL` in both local `.env` and Render's environment dashboard.
+4. Run `npm run prisma:push` to sync the schema.
+
+### Backend — Render.com
+1. Create a new **Web Service** on Render, connecting to `purushothaman-web/stylework`.
 2. Set **Root Directory** to `backend`.
-3. Set **Build Command**: `npm install && npm run prisma:generate && npm run build`
-4. Set **Start Command**: `node dist/server.js`
+3. Set **Build Command**: `npm install && npx prisma generate`
+4. Set **Start Command**: `npm start`
 5. Add environment variables in Render dashboard:
-   - `DATABASE_URL` — your hosted PostgreSQL URL (e.g. Supabase)
-   - `CLIENT_ORIGIN` — your deployed frontend URL (e.g. `https://yourapp.vercel.app`)
-   - `PORT` — `3000`
+   - `DATABASE_URL` — your Neon PostgreSQL connection string
+   - `CLIENT_ORIGIN` — `https://stylework-eight.vercel.app` *(without trailing slash)*
    - `NODE_ENV` — `production`
 
-### Database — Supabase
-
-1. Create a new project on [Supabase](https://supabase.com).
-2. Copy the **Connection String** (with `?pgbouncer=true` removed for Prisma Direct Connection).
-3. Set it as `DATABASE_URL` in Render environment variables.
-4. Run `prisma db push` locally pointing at the Supabase URL to apply the schema.
-
 ### Frontend — Vercel
-
 1. Import the repository on [Vercel](https://vercel.com).
 2. Set **Root Directory** to `frontend`.
-3. Set **Build Command**: `npm run build`
-4. Set **Output Directory**: `dist`
-5. Add environment variable:
-   - `VITE_API_URL` — your Render backend URL (e.g. `https://your-api.onrender.com`)
+3. Set **Framework Preset**: `Vite`.
+4. Set **Build Command**: `npm run build`
+5. Set **Output Directory**: `dist`
+6. Add environment variable:
+   - `VITE_API_BASE_URL` — `https://stylework.onrender.com/api`
 
 ---
 

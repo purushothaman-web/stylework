@@ -18,13 +18,19 @@ export function errorHandler(
   res: Response,
   _next: NextFunction
 ): void {
-  const statusCode =
-    'statusCode' in err && typeof err.statusCode === 'number'
-      ? err.statusCode
-      : 500;
+  const isAppError =
+    err instanceof AppError ||
+    ('statusCode' in err && typeof err.statusCode === 'number' && 'isOperational' in err);
+
+  const statusCode = isAppError ? (err as AppError).statusCode : 500;
+  const message = isAppError ? err.message : 'Internal Server Error';
+
+  if (!isAppError) {
+    console.error('Unhandled Server Error:', err);
+  }
 
   res.status(statusCode).json({
     success: false,
-    message: err.message || 'Internal Server Error',
+    message,
   });
 }

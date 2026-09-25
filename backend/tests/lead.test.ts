@@ -11,9 +11,9 @@ describe('Lead Tracker Backend Integration Tests', () => {
   const testPrefix = `test-${Date.now()}`;
 
   before(async () => {
-    // Clean up any old test records
+    // Clean up any old test records specifically matching this run's prefix
     await prisma.lead.deleteMany({
-      where: { email: { contains: 'test-' } },
+      where: { email: { contains: testPrefix } },
     });
 
     const app = createApp();
@@ -27,9 +27,9 @@ describe('Lead Tracker Backend Integration Tests', () => {
   });
 
   after(async () => {
-    // Clean up test records created during the run
+    // Clean up test records created specifically during this run
     await prisma.lead.deleteMany({
-      where: { email: { contains: 'test-' } },
+      where: { email: { contains: testPrefix } },
     });
 
     await prisma.$disconnect();
@@ -174,6 +174,36 @@ describe('Lead Tracker Backend Integration Tests', () => {
       const body = await res.json();
       assert.equal(body.success, false);
       assert.match(body.message, /letters, spaces, hyphens/i);
+    });
+
+    it('returns 400 when request body is empty', async () => {
+      const res = await fetch(`${baseUrl}/api/leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+
+      assert.equal(res.status, 400);
+      const body = await res.json();
+      assert.equal(body.success, false);
+      assert.match(body.message, /Name is required/);
+    });
+
+    it('successfully creates a lead with unicode characters in name (e.g. José Müller)', async () => {
+      const res = await fetch(`${baseUrl}/api/leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'José Müller',
+          email: `${testPrefix}-jose@example.com`,
+          phone: '+34 912 345 678',
+        }),
+      });
+
+      assert.equal(res.status, 201);
+      const body = await res.json();
+      assert.equal(body.success, true);
+      assert.equal(body.data.name, 'José Müller');
     });
 
     it('returns 409 Conflict when creating a lead with a duplicate email', async () => {

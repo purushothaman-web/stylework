@@ -14,8 +14,8 @@ const EMAIL_REGEX =
 // Standard telephone format allowing international (+), spaces, hyphens, parentheses, but strictly NO alphabets
 const PHONE_REGEX = /^\+?[0-9\s\-()]{7,20}$/;
 
-// Name regex ensuring valid letters, spaces, apostrophes, hyphens, and disallowing digits/HTML
-const NAME_REGEX = /^[a-zA-Z\s'.-]{2,60}$/;
+// Name regex ensuring valid letters (including international characters like José/Müller), spaces, apostrophes, hyphens, and disallowing digits/HTML
+const NAME_REGEX = /^[\p{L}\s'.-]{2,60}$/u;
 
 export const LeadFormModal: React.FC<LeadFormModalProps> = ({
   isOpen,
