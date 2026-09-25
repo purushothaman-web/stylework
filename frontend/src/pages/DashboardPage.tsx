@@ -87,30 +87,30 @@ export const DashboardPage: React.FC = () => {
   const qualifiedCount = leads.filter((l) => l.status === 'QUALIFIED').length;
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 relative">
+    <div className="min-h-screen bg-canvas py-8 px-4 sm:px-6 lg:px-8 relative selection:bg-[#fde047] selection:text-espresso">
       {/* Toast Notification */}
       {toast && (
         <div className="fixed top-5 right-5 z-50 animate-in slide-in-from-top-2 duration-300">
           <div
             className={`px-4 py-3 rounded-xl shadow-lg border text-sm font-medium flex items-center gap-2.5 ${
               toast.type === 'success'
-                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                : 'bg-rose-50 text-rose-800 border-rose-200'
+                ? 'bg-[#f0fdf4] text-[#166534] border-[#bbf7d0]'
+                : 'bg-[#fef2f2] text-[#991b1b] border-[#fecaca]'
             }`}
           >
             {toast.type === 'success' ? (
-              <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-[#16a34a] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             ) : (
-              <svg className="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-[#ef4444] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             )}
             <span>{toast.message}</span>
             <button
               onClick={() => setToast(null)}
-              className="ml-2 text-slate-400 hover:text-slate-600 cursor-pointer"
+              className="ml-2 text-[#78716c] hover:text-espresso cursor-pointer"
             >
               ×
             </button>
@@ -119,28 +119,28 @@ export const DashboardPage: React.FC = () => {
       )}
 
       <div className="max-w-6xl mx-auto space-y-6">
-        {/* Top Header */}
-        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
+        {/* Editorial Top Header */}
+        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-stone-border">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+              <h1 className="font-display text-3xl sm:text-4xl font-normal text-espresso tracking-tight">
                 Lead Tracker
               </h1>
               {!isLoading && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
-                  {totalCount} {totalCount === 1 ? 'lead' : 'leads'}
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#f0eee6] text-[#44403c] border border-[#dfdbcf]">
+                  {totalCount} {totalCount === 1 ? 'prospect' : 'prospects'}
                 </span>
               )}
             </div>
-            <p className="text-sm text-slate-500 mt-1">
-              Capture, qualify, and convert your pipeline leads in real-time.
+            <p className="text-sm text-[#78716c] mt-1 font-sans">
+              Pipeline management for converting high-value opportunities.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 active:scale-98 transition-all shadow-sm hover:shadow-md cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-terracotta hover:bg-[#9a3412] active:scale-98 transition-all shadow-xs hover:shadow-sm rounded-xl cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -150,19 +150,19 @@ export const DashboardPage: React.FC = () => {
           </div>
         </header>
 
-        {/* Quick Metrics Bar */}
+        {/* Editorial Metrics Bar */}
         <section className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-          <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs">
-            <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Leads</span>
-            <div className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">{totalCount}</div>
+          <div className="bg-card-bg p-4 sm:p-5 rounded-2xl border border-stone-border shadow-2xs">
+            <span className="text-[11px] font-semibold text-[#78716c] uppercase tracking-wider">Total Pipeline</span>
+            <div className="font-display text-2xl sm:text-3xl font-medium text-espresso mt-1.5 tabular-nums">{totalCount}</div>
           </div>
-          <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs">
-            <span className="text-xs font-medium text-purple-600 uppercase tracking-wider">Qualified</span>
-            <div className="text-xl sm:text-2xl font-bold text-purple-700 mt-1">{qualifiedCount}</div>
+          <div className="bg-card-bg p-4 sm:p-5 rounded-2xl border border-stone-border shadow-2xs">
+            <span className="text-[11px] font-semibold text-[#4338ca] uppercase tracking-wider">Qualified</span>
+            <div className="font-display text-2xl sm:text-3xl font-medium text-[#3730a3] mt-1.5 tabular-nums">{qualifiedCount}</div>
           </div>
-          <div className="col-span-2 sm:col-span-1 bg-white p-4 rounded-xl border border-slate-200/80 shadow-2xs">
-            <span className="text-xs font-medium text-emerald-600 uppercase tracking-wider">Won Deals</span>
-            <div className="text-xl sm:text-2xl font-bold text-emerald-700 mt-1">{wonCount}</div>
+          <div className="col-span-2 sm:col-span-1 bg-card-bg p-4 sm:p-5 rounded-2xl border border-stone-border shadow-2xs">
+            <span className="text-[11px] font-semibold text-[#166534] uppercase tracking-wider">Won Deals</span>
+            <div className="font-display text-2xl sm:text-3xl font-medium text-[#15803d] mt-1.5 tabular-nums">{wonCount}</div>
           </div>
         </section>
 
@@ -176,16 +176,16 @@ export const DashboardPage: React.FC = () => {
 
         {/* Error notification if fetch failed */}
         {error && (
-          <div className="rounded-xl bg-rose-50 border border-rose-200 p-4 text-sm text-rose-800 flex items-center justify-between">
+          <div className="rounded-xl bg-[#fef2f2] border border-[#fecaca] p-4 text-sm text-[#991b1b] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span>{error}</span>
             </div>
             <button
               onClick={() => fetchLeads()}
-              className="underline font-medium hover:text-rose-900 cursor-pointer"
+              className="underline font-semibold hover:text-[#7f1d1d] cursor-pointer"
             >
               Retry
             </button>

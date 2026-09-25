@@ -15,14 +15,14 @@ export const LeadRow: React.FC<LeadRowProps> = ({ lead, onStatusChange }) => {
   });
 
   return (
-    <tr className="border-b border-slate-100 hover:bg-slate-50/70 transition-colors">
-      <td className="py-3.5 px-4 text-sm font-medium text-slate-900">
+    <tr className="border-b border-[#e7e5df] hover:bg-[#fcfbf9] transition-colors">
+      <td className="py-3.5 px-4 text-sm font-semibold text-[#1c1917]">
         {lead.name}
       </td>
-      <td className="py-3.5 px-4 text-sm text-slate-600">
+      <td className="py-3.5 px-4 text-sm text-[#57534e]">
         {lead.email}
       </td>
-      <td className="py-3.5 px-4 text-sm text-slate-600 font-mono text-xs">
+      <td className="py-3.5 px-4 text-[#57534e] font-mono text-xs">
         {lead.phone}
       </td>
       <td className="py-3.5 px-4 text-sm">
@@ -31,7 +31,7 @@ export const LeadRow: React.FC<LeadRowProps> = ({ lead, onStatusChange }) => {
           onChange={onStatusChange ? (newStatus) => onStatusChange(lead.id, newStatus) : undefined}
         />
       </td>
-      <td className="py-3.5 px-4 text-xs text-slate-500 whitespace-nowrap">
+      <td className="py-3.5 px-4 text-xs text-[#78716c] whitespace-nowrap">
         {formattedDate}
       </td>
     </tr>

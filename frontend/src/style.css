@@ -1,22 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --color-surface-bg: #f8fafc;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --color-canvas: #f7f6f1;
+  --color-surface: #ffffff;
   --color-card-bg: #ffffff;
+  --color-stone-border: #e7e5df;
+  --color-espresso: #1c1917;
+  --color-terracotta: #c2410c;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-sans);
-  background-color: #f8fafc;
-  color: #0f172a;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f7f6f1;
+  color: #1c1917;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings use the refined Newsreader editorial serif */
+h1,
+h2,
+h3,
+.font-display {
+  font-family: 'Newsreader', Georgia, serif;
+  font-feature-settings: 'cv01', 'cv02';
+  letter-spacing: -0.015em;
 }
 
 * {
   box-sizing: border-box;
+}
+
+::selection {
+  background-color: #fef08a;
+  color: #1c1917;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #a8a29e;
 }

@@ -142,6 +142,40 @@ describe('Lead Tracker Backend Integration Tests', () => {
       assert.match(body.message, /phone number/i);
     });
 
+    it('returns 400 when phone number contains alphabetic characters (e.g. 9123456780f)', async () => {
+      const res = await fetch(`${baseUrl}/api/leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'Alpha Phone User',
+          email: `${testPrefix}-alphaphone@example.com`,
+          phone: '9123456780f',
+        }),
+      });
+
+      assert.equal(res.status, 400);
+      const body = await res.json();
+      assert.equal(body.success, false);
+      assert.match(body.message, /alphabetic/i);
+    });
+
+    it('returns 400 when name contains numbers or special characters', async () => {
+      const res = await fetch(`${baseUrl}/api/leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: '<script>alert(1)</script>',
+          email: `${testPrefix}-xss@example.com`,
+          phone: '+1 555-0123',
+        }),
+      });
+
+      assert.equal(res.status, 400);
+      const body = await res.json();
+      assert.equal(body.success, false);
+      assert.match(body.message, /letters, spaces, hyphens/i);
+    });
+
     it('returns 409 Conflict when creating a lead with a duplicate email', async () => {
       const payload = {
         name: 'Duplicate Lead',
