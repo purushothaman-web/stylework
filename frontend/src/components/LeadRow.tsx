@@ -8,15 +8,29 @@ interface LeadRowProps {
 }
 
 export const LeadRow: React.FC<LeadRowProps> = ({ lead }) => {
+  const formattedDate = new Date(lead.createdAt).toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
   return (
-    <tr>
-      <td>{lead.name}</td>
-      <td>{lead.email}</td>
-      <td>{lead.phone}</td>
-      <td>
+    <tr className="border-b border-slate-100 hover:bg-slate-50/70 transition-colors">
+      <td className="py-3.5 px-4 text-sm font-medium text-slate-900">
+        {lead.name}
+      </td>
+      <td className="py-3.5 px-4 text-sm text-slate-600">
+        {lead.email}
+      </td>
+      <td className="py-3.5 px-4 text-sm text-slate-600 font-mono text-xs">
+        {lead.phone}
+      </td>
+      <td className="py-3.5 px-4 text-sm">
         <StatusBadge status={lead.status} />
       </td>
-      <td>{new Date(lead.createdAt).toLocaleDateString()}</td>
+      <td className="py-3.5 px-4 text-xs text-slate-500 whitespace-nowrap">
+        {formattedDate}
+      </td>
     </tr>
   );
 };
