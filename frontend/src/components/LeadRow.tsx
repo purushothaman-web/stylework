@@ -1,13 +1,13 @@
 import React from 'react';
 import type { Lead, LeadStatus } from '../types/lead';
-import { StatusBadge } from './StatusBadge';
+import { InlineStatusSelect } from './InlineStatusSelect';
 
 interface LeadRowProps {
   lead: Lead;
   onStatusChange?: (id: string, status: LeadStatus) => void;
 }
 
-export const LeadRow: React.FC<LeadRowProps> = ({ lead }) => {
+export const LeadRow: React.FC<LeadRowProps> = ({ lead, onStatusChange }) => {
   const formattedDate = new Date(lead.createdAt).toLocaleDateString(undefined, {
     month: 'short',
     day: 'numeric',
@@ -26,7 +26,10 @@ export const LeadRow: React.FC<LeadRowProps> = ({ lead }) => {
         {lead.phone}
       </td>
       <td className="py-3.5 px-4 text-sm">
-        <StatusBadge status={lead.status} />
+        <InlineStatusSelect
+          status={lead.status}
+          onChange={onStatusChange ? (newStatus) => onStatusChange(lead.id, newStatus) : undefined}
+        />
       </td>
       <td className="py-3.5 px-4 text-xs text-slate-500 whitespace-nowrap">
         {formattedDate}

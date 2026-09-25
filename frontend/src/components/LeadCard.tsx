@@ -1,13 +1,13 @@
 import React from 'react';
 import type { Lead, LeadStatus } from '../types/lead';
-import { StatusBadge } from './StatusBadge';
+import { InlineStatusSelect } from './InlineStatusSelect';
 
 interface LeadCardProps {
   lead: Lead;
   onStatusChange?: (id: string, status: LeadStatus) => void;
 }
 
-export const LeadCard: React.FC<LeadCardProps> = ({ lead }) => {
+export const LeadCard: React.FC<LeadCardProps> = ({ lead, onStatusChange }) => {
   const formattedDate = new Date(lead.createdAt).toLocaleDateString(undefined, {
     month: 'short',
     day: 'numeric',
@@ -15,13 +15,16 @@ export const LeadCard: React.FC<LeadCardProps> = ({ lead }) => {
   });
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs hover:border-slate-300 transition-all flex flex-col gap-3">
+    <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs hover:border-slate-300 transition-all flex flex-col gap-3">
       <div className="flex items-start justify-between gap-2">
         <div>
           <h3 className="text-sm font-semibold text-slate-900">{lead.name}</h3>
           <p className="text-xs text-slate-500 mt-0.5">{formattedDate}</p>
         </div>
-        <StatusBadge status={lead.status} />
+        <InlineStatusSelect
+          status={lead.status}
+          onChange={onStatusChange ? (newStatus) => onStatusChange(lead.id, newStatus) : undefined}
+        />
       </div>
 
       <div className="text-xs text-slate-600 flex flex-col gap-1.5 pt-2 border-t border-slate-100">
